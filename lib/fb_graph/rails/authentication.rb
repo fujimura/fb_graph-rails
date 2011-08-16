@@ -53,6 +53,13 @@ module FbGraph::Rails
 
     module InstanceMethods
 
+      # Store user in session as current_user
+      #
+      def authenticate(user)
+        raise Unauthorized unless user
+        session[:current_user] = user.id
+      end
+
       # Return current_user.
       # If it does not exist, returns nil.
       #
@@ -70,26 +77,19 @@ module FbGraph::Rails
         !current_user.blank?
       end
 
-      # Store user in session as current_user
-      #
-      def authenticate(user)
-        raise Unauthorized unless user
-        session[:current_user] = user.id
-      end
-
       # Create and authenticate current_user by signed_request.
       # if signed_request was not given, do nothing.
       # if signed_request was not authorized(means user didn't installed app), do nothing.
       #
+      # TODO rename method
       def auth_with_signed_request
         return unless params[:signed_request]
 
-        auth = Facebook.auth.from_signed_request(params[:signed_request])
-        unless auth.authorized?
-          unauthenticate
-          return
-        end
-        authenticate ::User.identify(auth.user)
+        auth = FbGraph::Auth.new(Facebook.config[:client_id],
+                                 Facebook.config[:client_secret],
+                                 :signed_request => params[:signed_request])
+        unauthenticate
+        authenticate ::User.identify(auth.user) if auth.authorized?
       end
 
       # Delete current_user

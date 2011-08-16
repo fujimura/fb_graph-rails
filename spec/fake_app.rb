@@ -68,5 +68,9 @@ class Facebook
     def auth
       FbGraph::Auth.new config[:client_id], config[:client_secret]
     end
+
+    def auth_from_signed_request(signed_request)
+      auth.from_signed_request(signed_request)
+    end
   end
 end

@@ -11,7 +11,7 @@ module FbGraph::Rails
       # @return user
       def identify(fb_user)
         user = find_or_initialize_by_identifier(fb_user.identifier.try(:to_s))
-        user.access_token = fb_user.access_token.access_token
+        user.access_token = fb_user.access_token
         user.save!
         user
       end

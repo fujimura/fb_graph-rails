@@ -114,4 +114,102 @@ describe ApplicationController do
 
   end
 
+  describe '#current_user' do
+    context 'user in session' do
+      before do
+        session[:current_user] = user.id
+      end
+      subject { controller.current_user }
+      it { should == user }
+    end
+    context 'no user in session' do
+      before do
+        session[:current_user] = nil
+      end
+      subject { controller.current_user }
+      it { should be_nil }
+    end
+    context 'user who does not exists' do
+      before do
+        session[:current_user] = user.id + 1
+      end
+      subject { controller.current_user }
+      it { should be_nil }
+    end
+  end
+
+  describe '#authenticate' do
+    context 'with user' do
+      it 'should set users id to sessin' do
+        controller.authenticate user
+        session[:current_user].should == user.id
+      end
+    end
+    context 'with nil' do
+      it 'should raise Unauthorized' do
+        lambda { controller.authenticate nil }.should raise_error FbGraph::Rails::Unauthorized
+      end
+    end
+  end
+
+  describe '#auth_with_signed_request' do
+    it 'should do nothing unless signed_request was given in params' do
+      dont_allow(Facebook).auth
+      controller.params[:signed_request] = nil
+      controller.auth_with_signed_request
+      true.should be_true # hmmm
+    end
+
+    context 'authorization succeed' do
+      let(:new_user) { Factory.create(:user) }
+      before do
+        controller.instance_variable_set '@current_user', user
+        auth = FbGraph::Auth.new('a', 'b')
+        stub(FbGraph::Auth).new.with_any_args do
+          auth.access_token = 'aaa'
+          auth.user = new_user
+          auth
+        end
+        controller.params[:signed_request] = 'a'
+        controller.auth_with_signed_request
+      end
+      it 'should authenticate with new user' do
+        controller.current_user.should == new_user
+      end
+    end
+    context 'authorization failed' do
+      before do
+        auth = FbGraph::Auth.new('a', 'b')
+        stub(FbGraph::Auth).new.with_any_args do
+          auth.access_token = false
+          auth
+        end
+        controller.instance_variable_set '@current_user', user
+        controller.params[:signed_request] = 'a'
+        controller.auth_with_signed_request
+      end
+      it 'should unauthenticate user' do
+        controller.current_user.should be_nil
+      end
+    end
+
+    context '#unauthenticate' do
+      before do
+        controller.instance_variable_set '@current_user', user
+        controller.unauthenticate
+      end
+      it 'should delete user' do
+        ::User.find_by_id(user.id).should be_nil
+      end
+      it 'should delete user id in session' do
+        controller.session[:current_user].should be_nil
+      end
+      it 'should delete current_user' do
+        controller.current_user.should be_nil
+      end
+      it 'should not raise even current_user does not exist' do
+        lambda { controller.unauthenticate }.should_not raise_error
+      end
+    end
+  end
 end
