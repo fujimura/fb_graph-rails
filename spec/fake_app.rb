@@ -20,9 +20,9 @@ app.config.active_support.deprecation = :log
 app.initialize!
 
 # routes
-#app.routes.draw do
-  #resources :users
-#end
+app.routes.draw do
+  resources :users
+end
 
 # models
 class User < ActiveRecord::Base
