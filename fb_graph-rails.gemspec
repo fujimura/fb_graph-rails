@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.add_dependency("fb_graph")
   s.add_dependency("rails", ["~> 3.0.9"])
   s.add_development_dependency("sqlite3")
+  s.add_development_dependency("database_cleaner")
   s.add_development_dependency("rspec")
   s.add_development_dependency("rspec-rails")
   s.add_development_dependency("ruby-debug")
