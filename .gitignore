@@ -4,3 +4,4 @@ Gemfile.lock
 spec/db
 pkg/*
 *.watchr
+log
