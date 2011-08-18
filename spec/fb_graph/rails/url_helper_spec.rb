@@ -1,10 +1,8 @@
 require 'spec_helper'
 
-RSpec.configure do |c|
-  c.include RSpec::Rails::ControllerExampleGroup
-end
-
 describe FbGraph::Rails::UrlHelper do
+  include RSpec::Rails::ControllerExampleGroup
+
   controller do
     def index
       render :nothing => true, :status => 200

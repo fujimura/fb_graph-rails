@@ -1,10 +1,7 @@
 require 'spec_helper'
 
-RSpec.configure do |c|
-  c.include RSpec::Rails::ControllerExampleGroup
-end
-
 describe ApplicationController do
+  include RSpec::Rails::ControllerExampleGroup
   let(:user) { Factory.create :user }
 
   describe 'filter method' do
