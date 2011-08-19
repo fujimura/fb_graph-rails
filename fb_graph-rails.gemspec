@@ -11,16 +11,17 @@ Gem::Specification.new do |s|
   s.homepage    = ""
   s.summary     = %q{TODO: Write a gem summary}
   s.description = %q{TODO: Write a gem description}
-  s.add_dependency("fb_graph")
-  s.add_dependency("rails", ["~> 3.0.9"])
-  s.add_development_dependency("sqlite3")
-  s.add_development_dependency("database_cleaner")
-  s.add_development_dependency("rspec")
-  s.add_development_dependency("rspec-rails")
-  s.add_development_dependency("ruby-debug")
-  s.add_development_dependency("rr")
-  s.add_development_dependency("factory_girl")
-  s.add_development_dependency("shoulda")
+  s.add_dependency "fb_graph"
+  s.add_dependency "rails", "~> 3.0.9"
+  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "database_cleaner"
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "ruby-debug"
+  s.add_development_dependency "rr"
+  s.add_development_dependency "rcov"
+  s.add_development_dependency "factory_girl"
+  s.add_development_dependency "shoulda"
 
   #  s.rubyforge_project = "fb_graph-rails"
 
