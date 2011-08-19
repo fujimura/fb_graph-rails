@@ -7,7 +7,7 @@ module FbGraph::Rails
         delegate *(args << {:to => :profile})
       end
 
-      # Create or find, and refresh user with given token.
+      # Create or find user, and refresh token.
       #
       # @return user
       def identify(fb_user)

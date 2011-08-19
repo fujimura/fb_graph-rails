@@ -1,6 +1,7 @@
 # Stolen from https://github.com/amatsuda/kaminari/blob/master/spec/fake_app.rb
-require 'active_record'
+# Thanks a_matsuda ;-)
 
+require 'active_record'
 require 'action_dispatch'
 require 'action_controller'
 require 'action_controller/railtie'
@@ -53,7 +54,7 @@ class Facebook
 
     def config
       @config = {
-          :client_id     => 'abc', 
+          :client_id     => 'abc',
           :client_secret => 'def',
           :canvas_url => 'http://apps.facebook.com/fb_graph-rails'
       }
@@ -72,7 +73,7 @@ class Facebook
     end
 
     def auth_from_signed_request(signed_request)
-      auth.from_signed_request(signed_request)
+      auth.from_signed_request signed_request
     end
   end
 end

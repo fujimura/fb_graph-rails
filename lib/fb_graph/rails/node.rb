@@ -21,6 +21,7 @@ module FbGraph::Rails
       @profile ||= begin
                      FbGraph.const_get(self.class.name).fetch(self.id)
                    rescue FbGraph::NotFound
+                     # nil can't be memoized
                      @_profile_was_not_found = true
                      nil
                    end

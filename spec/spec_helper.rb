@@ -1,8 +1,5 @@
-#$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-#$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib', 'fb_graph'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
-#require 'rails'
 require 'factory_girl'
 require 'shoulda'
 require 'database_cleaner'

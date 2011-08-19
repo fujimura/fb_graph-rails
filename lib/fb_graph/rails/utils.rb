@@ -3,7 +3,6 @@ module FbGraph::Rails
 
     # Returns url to ask user to allow use his/her datas, according to passed permissions.
     #
-    # @return [String]
     def oauth_permission_url_for(permissions)
       redirect_uri = if request.get?
                        canvas_url_for request.path
@@ -31,10 +30,11 @@ module FbGraph::Rails
       "#{Facebook.canvas_url.sub(/\/\z/, '')}/#{path.sub(/\A\//, '')}"
     end
 
-    # Go outside of iframe by rewriting url of frame with JavaScript.
-    # Mainly used to get signed request
+    # Rewrite url of inner frame and force user to access 'apps.facebook.com' type url.
+    # This makes user to make a request with signed_request.
     #
     def relocate_to(url_for_options)
+      #TODO remove unnecessary query params
       to = url_for(url_for_options)
       render :text => "<script>top.location = '#{to}'</script>"
     end

@@ -1,29 +1,22 @@
 module FbGraph::Rails
-  #TODO move
-  class CurrentUserDoesNotExist < StandardError ; end
-  class CandidateUserDoesNotExist < StandardError ; end
-  class JavaScriptAuthenticationFailed < StandardError ; end
-  class Unauthorized < StandardError; end
-  class UserDoesNotAuthenticated < StandardError
-    attr_accessor :permissions
-    def initialize(permissions)
-      @permissions = permissions
-    end
-  end
   module Authentication
 
     extend ActiveSupport::Concern
 
     module ClassMethods
+
       # Check the login use has given permissions or not.
       # If not, redirect to Facebook's permissions dialog page.
       #
       # Actually, this method sets dynamically generated method to before_filter & rescue_from.
+      # Can take :if => cond hash at last and it will be attached to before_filter.
       #
       def require_user_with(*args)
         filter_options = args.last.is_a?(Hash) ? args.last : {}
         permissions = args[0..args.length-1]
-        #TODO What happens with permission includes undersocre?
+        #TODO Handle permission includes underscore
+        #     This is not actually harmful but the name of defined method
+        #     could be confusing.
         require_method_name = "require_user_with_#{permissions.join('_')}".to_sym
         rescue_method_name  = "rescue_from_#{permissions.join('_')}".to_sym
 
@@ -36,12 +29,10 @@ module FbGraph::Rails
         end
         before_filter require_method_name, filter_options
 
-
         # Define method to handle the error which will be raised
         # when the user didn't have all required permissions
         define_method rescue_method_name do |exception|
           if exception.permissions == permissions
-            #TODO use redirect?
             relocate_to oauth_permission_url_for(permissions)
           else
             raise exception
@@ -53,7 +44,7 @@ module FbGraph::Rails
 
     module InstanceMethods
 
-      # Store user in session as current_user
+      # Store user id in session.
       #
       def authenticate(user)
         raise Unauthorized unless user
@@ -70,7 +61,7 @@ module FbGraph::Rails
         nil
       end
 
-      # Return current_user exists or not
+      # Return current_user exists or not.
       #
       # @return [Boolean] Whether or not page's plan is updated.
       def authenticated?
@@ -78,8 +69,8 @@ module FbGraph::Rails
       end
 
       # Create and authenticate current_user by signed_request.
-      # if signed_request was not given, do nothing.
-      # if signed_request was not authorized(means user didn't installed app), do nothing.
+      # If signed_request was not given, do nothing.
+      # If signed_request was not authorized(means mainly user didn't installed app), do nothing.
       #
       # TODO rename method
       def auth_with_signed_request
@@ -92,10 +83,10 @@ module FbGraph::Rails
         authenticate ::User.identify(auth.user) if auth.authorized?
       end
 
-      # Delete current_user
+      # Delete current_user from database and session.
       #
       def unauthenticate
-        current_user.try(:destroy)
+        current_user.try :destroy 
         @current_user = session[:current_user] = nil
       end
     end
