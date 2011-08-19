@@ -8,8 +8,8 @@ require 'shoulda'
 require 'database_cleaner'
 require File.join(File.dirname(__FILE__), 'factories')
 require File.join(File.dirname(__FILE__), 'fake_app')
-require File.join(File.dirname(__FILE__), 'support', 'matchers')
 require 'rspec/rails'
+require File.join(File.dirname(__FILE__), 'support', 'matchers')
 
 RSpec.configure do |config|
   config.mock_with :rr

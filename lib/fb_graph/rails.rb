@@ -9,10 +9,8 @@ end
 
 require File.join(File.dirname(__FILE__), 'rails', 'authentication')
 require File.join(File.dirname(__FILE__), 'rails', 'node')
-require File.join(File.dirname(__FILE__), 'rails', 'url_helper')
 require File.join(File.dirname(__FILE__), 'rails', 'user')
 require File.join(File.dirname(__FILE__), 'rails', 'utils')
 
-ActionController::Base.send :include, FbGraph::Rails::UrlHelper
 ActionController::Base.send :include, FbGraph::Rails::Utils
 ActionController::Base.send :include, FbGraph::Rails::Authentication
