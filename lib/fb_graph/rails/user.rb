@@ -6,6 +6,7 @@ module FbGraph::Rails
       def delegate_to_facebook *args
         delegate *(args << {:to => :profile})
       end
+
       # Create or find, and refresh user with given token.
       #
       # @return user
@@ -27,12 +28,8 @@ module FbGraph::Rails
         @permissions ||= FbGraph::User.fetch(identifier, :access_token => access_token).permissions
       end
 
-      def likes
-        @likes ||= profile.likes
-      end
-
-      def permits?(permissions)
-        permissions.all?{|perm| permissions.include? perm }
+      def permits?(*requred_permissions)
+        (requred_permissions - permissions).empty?
       end
 
     end

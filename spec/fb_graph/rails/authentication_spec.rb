@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ApplicationController do
   include RSpec::Rails::ControllerExampleGroup
-  let(:user) { Factory.create :user }
+  let(:user) { FactoryGirl.create :user }
 
   describe 'filter method' do
     let(:filter_method_name) { :require_user_with_user_birthday_email }
@@ -158,7 +158,7 @@ describe ApplicationController do
     end
 
     context 'authorization succeed' do
-      let(:new_user) { Factory.create(:user) }
+      let(:new_user) { FactoryGirl.create(:user) }
       before do
         controller.instance_variable_set '@current_user', user
         auth = FbGraph::Auth.new('a', 'b')

@@ -28,6 +28,7 @@ end
 # models
 class User < ActiveRecord::Base
   include FbGraph::Rails::User
+  delegate_to_facebook :email, :interested_in
 end
 
 # controllers
