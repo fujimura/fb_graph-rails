@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
   s.name        = "fb_graph-rails"
   s.version     = FbGraph::Rails::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.authors     = ["Daisuke Fujimura"]
+  s.email       = ["me@fujimuradaisuke.com"]
+  s.homepage    = "https://github.com/fujimura/fb_graph-rails"
+  s.summary     = %q{Lightweight FbGraph wrapper for Ruby on Rails}
+  s.description = %q{Lightweight FbGraph wrapper for Ruby on Rails}
   s.add_dependency "fb_graph"
   s.add_dependency "rails", "~> 3.0.9"
   s.add_development_dependency "sqlite3"
