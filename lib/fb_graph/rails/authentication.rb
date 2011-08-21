@@ -12,8 +12,9 @@ module FbGraph::Rails
       # Can take :if => cond hash at last and it will be attached to before_filter.
       #
       def require_user_with(*args)
-        filter_options = args.last.is_a?(Hash) ? args.last : {}
-        permissions = args[0..args.length-1]
+        args = args.dup
+        filter_options = args.last.is_a?(Hash) ? args.pop : {}
+        permissions = args
         #TODO Handle permission includes underscore
         #     This is not actually harmful but the name of defined method
         #     could be confusing.
