@@ -18,5 +18,4 @@ Simple FbGraph wrapper for Rails.
 * Slow. No caching for now.
 
 ## TODO
-* Write specs for FbGraph::Rails::Node.
 * Write installation guide.
