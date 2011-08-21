@@ -4,6 +4,13 @@ module FbGraph::Rails
 
     module ClassMethods
       def facebook_attributes(*args)
+        args = args.dup
+        options = args.last.is_a?(Hash) ? args.pop : {}
+
+        define_method :facebook_identifier do
+          self.send(options[:identifier] || :identifier)
+        end
+
         delegate *(args << {:to => :profile})
       end
 
@@ -21,11 +28,13 @@ module FbGraph::Rails
     module InstanceMethods
 
       def profile
-        @profile ||= FbGraph::User.fetch(identifier, :access_token => access_token)
+        @profile ||= FbGraph::User.fetch(facebook_identifier,
+                                         :access_token => access_token)
       end
 
       def permissions
-        @permissions ||= FbGraph::User.fetch(identifier, :access_token => access_token).permissions
+        @permissions ||= FbGraph::User.fetch(facebook_identifier,
+                                             :access_token => access_token).permissions
       end
 
       def permits?(*requred_permissions)

@@ -79,4 +79,30 @@ describe FbGraph::Rails::User do
     end
   end
 
+  describe 'with options' do
+    before :all do
+      class Person
+        include FbGraph::Rails::User
+        attr_accessor :facebook_id, :access_token
+        facebook_attributes :email, :identifier => :facebook_id
+        def initialize(options)
+          @facebook_id = options[:facebook_id]
+          @access_token = options[:access_token]
+        end
+      end
+    end
+    let(:facebook_id)  { 1984 }
+    let(:email)        { 'admin@fujimuradaisuke.com' }
+    let(:access_token) { 'fififi' }
+    let(:person)       { Person.new(:facebook_id => facebook_id, :access_token => access_token) }
+    it 'should respect given options' do
+      stub(FbGraph::User).fetch(facebook_id, :access_token => access_token) do
+        FbGraph::User.new(facebook_id,
+                          :email => email,
+                          :access_token => access_token)
+      end
+      person.email.should == email
+    end
+  end
 end
+
