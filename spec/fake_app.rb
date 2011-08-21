@@ -50,10 +50,8 @@ end
 
 class Facebook
   class << self
-    extend ActiveSupport::Memoizable
-
     def config
-      @config = {
+      @config ||= {
           :client_id     => 'abc',
           :client_secret => 'def',
           :canvas_url => 'http://apps.facebook.com/fb_graph-rails'
