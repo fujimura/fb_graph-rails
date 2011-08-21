@@ -3,7 +3,7 @@ module FbGraph::Rails
     extend ActiveSupport::Concern
 
     module ClassMethods
-      def delegate_to_facebook *args
+      def facebook_attributes(*args)
         delegate *(args << {:to => :profile})
       end
 

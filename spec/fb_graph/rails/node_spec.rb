@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FbGraph::Rails::Node, '#delegate_to_facebook' do
+describe FbGraph::Rails::Node, '#facebook_attributes' do
   let(:identifier) { 2030 }
   let(:name) { 'FbGraph Rails Page' }
   describe 'with default setting' do
@@ -9,7 +9,7 @@ describe FbGraph::Rails::Node, '#delegate_to_facebook' do
       class Page
         include FbGraph::Rails::Node
         attr_accessor :identifier
-        delegate_to_facebook :name, :like_count #, :rescue_nil => true
+        facebook_attributes :name, :like_count #, :rescue_nil => true
 
         def initialize(identifier)
           @identifier = identifier
@@ -48,7 +48,7 @@ describe FbGraph::Rails::Node, '#delegate_to_facebook' do
       class Event
         include FbGraph::Rails::Node
         attr_accessor :fb_id
-        delegate_to_facebook :name, :location, :identifier => :fb_id, :ignore_errors => true
+        facebook_attributes :name, :location, :identifier => :fb_id, :ignore_errors => true
 
         def initialize(options)
           @fb_id = options[:fb_id]

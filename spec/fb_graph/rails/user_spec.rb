@@ -11,7 +11,7 @@ describe FbGraph::Rails::User do
     me
   end
 
-  describe '.delegate_to_facebook' do
+  describe '.facebook_attributes' do
     before do
       stub(FbGraph::User).fetch(user.identifier, :access_token => user.access_token) { me }
     end
@@ -55,7 +55,7 @@ describe FbGraph::Rails::User do
     end
   end
 
-  describe '.delegate_to_facebook' do
+  describe '.facebook_attributes' do
   end
 
   describe '#permits?' do

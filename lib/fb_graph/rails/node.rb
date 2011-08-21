@@ -2,7 +2,7 @@ module FbGraph::Rails
   module Node
     extend ActiveSupport::Concern
     module ClassMethods
-      def delegate_to_facebook(*args)
+      def facebook_attributes(*args)
         args = args.dup
         options = args.last.is_a?(Hash) ? args.pop : {}
 
