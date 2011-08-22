@@ -10,7 +10,7 @@ module FbGraph::Rails
         self.ignore_errors = options[:ignore_errors] == true
 
         define_method :facebook_identifier do
-          self.send (options[:identifier] || :identifier)
+          self.send(options[:identifier] || :identifier)
         end
 
         args.each do |attribute|
