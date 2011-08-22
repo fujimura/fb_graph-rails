@@ -13,8 +13,8 @@ module FbGraph::Rails
       #
       def require_user_with(*args)
         args = args.dup
-        filter_options = args.last.is_a?(Hash) ? args.pop : {}
-        permissions = args
+        filter_options, permissions = args.extract_options!, args.flatten
+
         #TODO Handle permission includes underscore
         #     This is not actually harmful but the name of defined method
         #     could be confusing.

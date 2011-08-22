@@ -98,6 +98,7 @@ describe ApplicationController do
         get :index
       end
       it { should respond_with :success }
+      it { should_not relocate_to controller.send(:oauth_permission_url_for, [:user_birthday, :email]) }
     end
 
     context "access by user without permissions" do
@@ -109,6 +110,22 @@ describe ApplicationController do
       it { should relocate_to controller.send(:oauth_permission_url_for, [:user_birthday, :email]) }
     end
 
+  end
+  describe 'require with array of permissions' do
+    controller do
+      require_user_with :aaa
+      def index
+        render :nothing => true, :status => 200
+      end
+    end
+
+    before do
+      user.instance_variable_set '@permissions', [:user_birthday, :email]
+      controller.instance_variable_set '@current_user', user
+      get :index
+    end
+    it { should_not relocate_to controller.send(:oauth_permission_url_for, [:user_birthday, :email]) }
+    it { should respond_with :success }
   end
 
   describe '#current_user' do
