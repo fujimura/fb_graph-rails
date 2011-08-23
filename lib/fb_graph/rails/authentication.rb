@@ -87,7 +87,8 @@ module FbGraph::Rails
       # Delete current_user from database and session.
       #
       def unauthenticate
-        current_user.try :destroy
+        return unless current_user
+        current_user.update_attribute :access_token, nil
         @current_user = session[:current_user] = nil
       end
     end

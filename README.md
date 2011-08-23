@@ -14,7 +14,6 @@ Simple FbGraph wrapper for Rails.
 * tba
 
 ## Limitations
-* User can't persist. It's a session like Object which holds access token.
 * Slow. No caching for now.
 
 ## TODO

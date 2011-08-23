@@ -212,8 +212,8 @@ describe ApplicationController do
         controller.instance_variable_set '@current_user', user
         controller.unauthenticate
       end
-      it 'should delete user' do
-        ::User.find_by_id(user.id).should be_nil
+      it 'should delete access_token of user' do
+        ::User.find_by_id(user.id).access_token.should be_nil
       end
       it 'should delete user id in session' do
         controller.session[:current_user].should be_nil
