@@ -1,6 +1,5 @@
 require 'rails'
 require 'fb_graph'
-require 'action_controller'
 
 require File.join(File.dirname(__FILE__), 'rails', 'node')
 require File.join(File.dirname(__FILE__), 'rails', 'user')

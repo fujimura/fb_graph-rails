@@ -5,7 +5,6 @@ require 'active_record'
 require 'action_dispatch'
 require 'action_controller'
 require 'action_controller/railtie'
-require 'action_view/railtie'
 require 'fb_graph/rails'
 
 # database
