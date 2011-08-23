@@ -1,17 +1,18 @@
 module FbGraph::Rails
   module User
+
     extend ActiveSupport::Concern
 
     module ClassMethods
       def facebook_attributes(*args)
         args = args.dup
-        options = args.last.is_a?(Hash) ? args.pop : {}
+        options, attrs = args.extract_options!, args.flatten
 
         define_method :facebook_identifier do
           self.send(options[:identifier] || :identifier)
         end
 
-        delegate *(args << {:to => :profile})
+        delegate *(attrs << {:to => :profile})
       end
 
       # Create or find user, and refresh token.
@@ -38,7 +39,7 @@ module FbGraph::Rails
       end
 
       def permits?(*requred_permissions)
-        (requred_permissions - permissions).empty?
+        (requred_permissions.flatten - permissions).empty?
       end
 
     end

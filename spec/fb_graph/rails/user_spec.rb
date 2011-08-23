@@ -71,6 +71,9 @@ describe FbGraph::Rails::User do
     it 'should be true if :email and :interested_in was given' do
       user.permits?(:email, :interested_in).should be_true
     end
+    it 'should be true if :email and :interested_in was given as array' do
+      user.permits?([:email, :interested_in]).should be_true
+    end
     it 'should be false if :education was given' do
       user.permits?(:education).should be_false
     end
