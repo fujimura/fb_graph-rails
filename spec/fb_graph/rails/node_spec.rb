@@ -77,4 +77,29 @@ describe FbGraph::Rails::Node, '#facebook_attributes' do
       its(:name) { should be_nil }
     end
   end
+
+  describe 'pass attributes with array' do
+    let(:like_count) { 120 }
+    before :all do
+      class Page
+        include FbGraph::Rails::Node
+        attr_accessor :identifier
+        facebook_attributes [:name, :like_count] #, :rescue_nil => true
+
+        def initialize(identifier)
+          @identifier = identifier
+        end
+      end
+    end
+    before do
+      stub(FbGraph::Page).fetch(identifier) do
+        FbGraph::Page.new(identifier,
+                          :name => name,
+                          :likes => like_count)
+      end
+    end
+    subject { Page.new(identifier) }
+    its(:name) { should == name }
+    its(:like_count) { should == like_count }
+  end
 end

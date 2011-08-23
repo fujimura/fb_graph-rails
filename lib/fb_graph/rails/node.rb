@@ -1,10 +1,12 @@
 module FbGraph::Rails
   module Node
+
     extend ActiveSupport::Concern
+
     module ClassMethods
       def facebook_attributes(*args)
         args = args.dup
-        options = args.last.is_a?(Hash) ? args.pop : {}
+        options, attrs = args.extract_options!, args.flatten
 
         cattr_accessor :ignore_errors
         self.ignore_errors = options[:ignore_errors] == true
@@ -13,13 +15,14 @@ module FbGraph::Rails
           self.send(options[:identifier] || :identifier)
         end
 
-        args.each do |attribute|
+        attrs.each do |attribute|
           define_method attribute do
             profile.nil? ? nil : profile.send(attribute)
           end
         end
       end
     end
+
     module InstanceMethods
       def profile
         return nil if @_profile_was_not_found
