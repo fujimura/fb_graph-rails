@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/fujimura/fb_graph-rails"
   s.summary     = %q{Lightweight FbGraph wrapper for Ruby on Rails}
   s.description = %q{Lightweight FbGraph wrapper for Ruby on Rails}
-  s.add_dependency "fb_graph", '~> 1.9.5'
-  s.add_dependency "rails", "~> 3.0.9"
+  s.add_dependency "fb_graph", '~> 1.9.0'
+  s.add_dependency "rails", "~> 3.0.0"
   s.add_development_dependency "sqlite3", "~> 1.3.4"
   s.add_development_dependency "database_cleaner", "~> 0.6.7"
   s.add_development_dependency "rspec", "~> 2.6.0"
