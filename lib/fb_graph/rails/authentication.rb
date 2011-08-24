@@ -11,7 +11,9 @@ module FbGraph::Rails
     module ClassMethods
 
       # Check the login use has given permissions or not.
-      # If not, redirect to Facebook's permissions dialog page.
+      # If not, user should be redirected to Facebook's permissions dialog page,
+      # and returns to originally requested path.
+      # If the request was not GET, user will be returned to root.
       #
       # Actually, this method sets dynamically generated method to before_filter & rescue_from.
       # Can take :if => cond hash at last and it will be attached to before_filter.
@@ -48,7 +50,9 @@ module FbGraph::Rails
             if block_given?
               instance_eval(&block)
             else
-              relocate_to oauth_permission_url_for(permissions)
+              client = Config.auth.client
+              client.redirect_uri = request.get? ? request.url : root_url
+              redirect_to client.authorization_uri(:scope => permissions)
             end
           else
             raise exception
@@ -106,7 +110,7 @@ module FbGraph::Rails
         auth = FbGraph::Auth.new(Config.client_id,
                                  Config.client_secret)
         client = auth.client
-        client.redirect_uri = canvas_url_for(request.path)
+        client.redirect_uri = url_for(request.params.merge :code => nil)
         client.authorization_code = params[:code]
         access_token = client.access_token!
 

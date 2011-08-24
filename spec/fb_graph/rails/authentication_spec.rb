@@ -73,7 +73,7 @@ describe ApplicationController do
       controller.respond_to?(:rescue_from_user_birthday_email).should be_true
     end
     it 'should rescue exception with given permission' do
-      mock(controller).relocate_to(controller.send(:oauth_permission_url_for, [:user_birthday, :email]))
+      mock(controller).redirect_to.with_any_args
       lambda { controller.send(rescue_method_name, exception) }.should_not raise_error
     end
     it "should raise exception with permission which doesn't match with given ones" do
@@ -103,7 +103,6 @@ describe ApplicationController do
         get :index
       end
       it { should respond_with :success }
-      it { should_not relocate_to controller.send(:oauth_permission_url_for, [:user_birthday, :email]) }
     end
 
     context "access by user without permissions" do
@@ -112,13 +111,16 @@ describe ApplicationController do
         controller.instance_variable_set '@current_user', user
         get :index
       end
-      it { should relocate_to controller.send(:oauth_permission_url_for, [:user_birthday, :email]) }
+      it { should respond_with :redirect }
+      it 'should redirect to facebook with current request uri' do
+        response.header['Location'].should =~ /#{"redirect_uri=" + CGI.escape(request.url)}/
+      end
     end
-
   end
+
   describe 'require with array of permissions' do
     controller do
-      require_user_with :aaa
+      require_user_with [:user_birthday, :email]
       def index
         render :nothing => true, :status => 200
       end
@@ -129,14 +131,13 @@ describe ApplicationController do
       controller.instance_variable_set '@current_user', user
       get :index
     end
-    it { should_not relocate_to controller.send(:oauth_permission_url_for, [:user_birthday, :email]) }
     it { should respond_with :success }
   end
 
   describe 'require user_birthday and email, rescue with given block' do
     controller do
       require_user_with :user_birthday, :email do
-        redirect_to root_path
+        relocate_to oauth_permission_url_for([:user_birthday, :email])
       end
 
       def index
@@ -149,7 +150,8 @@ describe ApplicationController do
       controller.instance_variable_set '@current_user', user
       get :index
     end
-    it { should redirect_to root_path }
+
+    it { should relocate_to controller.send(:oauth_permission_url_for, [:user_birthday, :email]) }
   end
 
   describe '#current_user' do
