@@ -30,6 +30,11 @@ describe ApplicationController do
       user.instance_variable_set '@permissions', [:user_birthday]
       lambda { controller.send(filter_method_name) }.should raise_error FbGraph::Rails::UserDoesNotAuthenticated
     end
+    it 'should raise UserDoesNotAuthenticated if Unauthorized was raised at asking permissions' do
+      mock(user).permits?.with_any_args { raise FbGraph::Unauthorized.new('aaa') }
+      controller.instance_variable_set '@current_user', user
+      lambda { controller.send(filter_method_name) }.should raise_error FbGraph::Rails::UserDoesNotAuthenticated
+    end
     it 'should be set as before filter' do
       controller._process_action_callbacks.any? do |filter|
         filter.kind == :before && filter.raw_filter == filter_method_name

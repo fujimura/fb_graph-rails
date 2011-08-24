@@ -28,11 +28,17 @@ module FbGraph::Rails
 
         # Define method to check current_user has given permissions
         define_method require_method_name do
-          auth_with_signed_request
-          unless current_user && permissions.all? { |p| current_user.permissions.include? p }
-            raise UserDoesNotAuthenticated.new(permissions)
-          end
+          auth_with_signed_request || auth_with_code
+
+          authorized = begin
+                         current_user && current_user.permits?(permissions)
+                       rescue FbGraph::Unauthorized
+                         # This will be raised if user does not authorized app
+                         false
+                       end
+          raise UserDoesNotAuthenticated.new(permissions) unless authorized
         end
+
         before_filter require_method_name, filter_options
 
         # Define method to handle the error which will be raised
@@ -91,6 +97,23 @@ module FbGraph::Rails
                                  :signed_request => params[:signed_request])
         unauthenticate
         authenticate ::User.identify(auth.user) if auth.authorized?
+      end
+
+      def auth_with_code
+        #TODO test
+        return unless params[:code]
+
+        auth = FbGraph::Auth.new(Config.client_id,
+                                 Config.client_secret)
+        client = auth.client
+        client.redirect_uri = canvas_url_for(request.path)
+        client.authorization_code = params[:code]
+        access_token = client.access_token!
+
+        unauthenticate
+        me = FbGraph::User.me(access_token).fetch
+        authenticate ::User.identify(me)
+
       end
 
       # Delete current_user from database and session.
