@@ -16,7 +16,7 @@ module FbGraph::Rails
       # Actually, this method sets dynamically generated method to before_filter & rescue_from.
       # Can take :if => cond hash at last and it will be attached to before_filter.
       #
-      def require_user_with(*args)
+      def require_user_with(*args, &block)
         args = args.dup
         filter_options, permissions = args.extract_options!, args.flatten
 
@@ -39,7 +39,11 @@ module FbGraph::Rails
         # when the user didn't have all required permissions
         define_method rescue_method_name do |exception|
           if exception.permissions == permissions
-            relocate_to oauth_permission_url_for(permissions)
+            if block_given?
+              instance_eval(&block)
+            else
+              relocate_to oauth_permission_url_for(permissions)
+            end
           else
             raise exception
           end

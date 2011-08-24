@@ -128,6 +128,25 @@ describe ApplicationController do
     it { should respond_with :success }
   end
 
+  describe 'require user_birthday and email, rescue with given block' do
+    controller do
+      require_user_with :user_birthday, :email do
+        redirect_to root_path
+      end
+
+      def index
+        render :nothing => true, :status => 200
+      end
+    end
+
+    before do
+      user.instance_variable_set '@permissions', []
+      controller.instance_variable_set '@current_user', user
+      get :index
+    end
+    it { should redirect_to root_path }
+  end
+
   describe '#current_user' do
     context 'user in session' do
       before do
