@@ -14,6 +14,7 @@ Simple FbGraph wrapper for Rails.
 * tba
 
 ## Limitations
+* OAuth2 authentication IS NOT SUPPORTED. Signed-request only.
 * Slow. No caching for now.
 
 ## TODO
