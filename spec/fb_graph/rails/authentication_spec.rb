@@ -168,7 +168,7 @@ describe ApplicationController do
 
   describe '#auth_with_signed_request' do
     it 'should do nothing unless signed_request was given in params' do
-      dont_allow(Facebook).auth
+      dont_allow(FbGraph::Auth).new
       controller.params[:signed_request] = nil
       controller.auth_with_signed_request
       true.should be_true # hmmm
