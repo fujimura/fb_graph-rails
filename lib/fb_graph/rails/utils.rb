@@ -37,7 +37,6 @@ module FbGraph::Rails
       # This makes user to make a request with signed_request.
       #
       def relocate_to(url_for_options)
-        #TODO remove unnecessary query params
         to = url_for(url_for_options)
         render :text => "<script>top.location = '#{to}'</script>"
       end
