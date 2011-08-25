@@ -1,0 +1,12 @@
+development:
+  client_id: 115997921798478
+  client_secret: e98l8888l888888l888888l88888e877
+  canvas_url: http://apps.facebook.com/fb_graph-rails
+test:
+  client_id: 115997921798478
+  client_secret: e98l8888l888888l888888l88888e877
+  canvas_url: http://apps.facebook.com/fb_graph-rails
+production:
+  client_id: 115997921798478
+  client_secret: e98l8888l888888l888888l88888e877
+  canvas_url: http://apps.facebook.com/fb_graph-rails

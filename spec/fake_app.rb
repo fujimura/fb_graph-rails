@@ -46,31 +46,3 @@ class CreateAllTables < ActiveRecord::Migration
     end
   end
 end
-
-class Facebook
-  class << self
-    def config
-      @config ||= {
-          :client_id     => 'abc',
-          :client_secret => 'def',
-          :canvas_url => 'http://apps.facebook.com/fb_graph-rails'
-      }
-    end
-
-    def canvas_url
-      config[:canvas_url]
-    end
-
-    def client_id
-      config[:client_id]
-    end
-
-    def auth
-      FbGraph::Auth.new config[:client_id], config[:client_secret]
-    end
-
-    def auth_from_signed_request(signed_request)
-      auth.from_signed_request signed_request
-    end
-  end
-end

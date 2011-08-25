@@ -12,7 +12,7 @@ module FbGraph::Rails
                        else
                          canvas_url_for root_path
                        end
-        "https://www.facebook.com/dialog/oauth?client_id=#{Facebook.client_id}&redirect_uri=#{redirect_uri}&scope=#{permissions.join(',')}"
+        "https://www.facebook.com/dialog/oauth?client_id=#{Config.client_id}&redirect_uri=#{redirect_uri}&scope=#{permissions.join(',')}"
       end
 
       # similar to url_for but returns a canvas_url for given options
@@ -30,7 +30,7 @@ module FbGraph::Rails
                else
                  url_for polymorphic_path(options, :only_path => true)
                end
-      "#{Facebook.canvas_url.sub(/\/\z/, '')}/#{path.sub(/\A\//, '')}"
+      "#{Config.canvas_url.sub(/\/\z/, '')}/#{path.sub(/\A\//, '')}"
       end
 
       # Rewrite url of inner frame and force user to access 'apps.facebook.com' type url.

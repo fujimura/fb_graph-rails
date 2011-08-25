@@ -77,8 +77,8 @@ module FbGraph::Rails
       def auth_with_signed_request
         return unless params[:signed_request]
 
-        auth = FbGraph::Auth.new(Facebook.config[:client_id],
-                                 Facebook.config[:client_secret],
+        auth = FbGraph::Auth.new(Config.client_id,
+                                 Config.client_secret,
                                  :signed_request => params[:signed_request])
         unauthenticate
         authenticate ::User.identify(auth.user) if auth.authorized?

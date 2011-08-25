@@ -3,6 +3,7 @@ require 'fb_graph'
 
 require File.join(File.dirname(__FILE__), 'rails', 'node')
 require File.join(File.dirname(__FILE__), 'rails', 'user')
+require File.join(File.dirname(__FILE__), 'rails', 'config')
 require File.join(File.dirname(__FILE__), 'rails', 'utils')
 require File.join(File.dirname(__FILE__), 'rails', 'authentication')
 
