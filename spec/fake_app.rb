@@ -17,6 +17,7 @@ app.config.secret_token = "3b7cd727ee24e8444053437c36cc66c4"
 app.config.secret_token = "3csos08ef99qwed99vjaskf9urjeeeel"
 app.config.session_store :cookie_store, :key => "_myapp_session"
 app.config.active_support.deprecation = :log
+app.config.root = File.join(File.dirname(__FILE__))
 app.initialize!
 
 # routes
