@@ -19,3 +19,5 @@ Simple FbGraph wrapper for Rails.
 
 ## TODO
 * Write installation guide.
+* Require user only with basic permissions
+* Logger support
