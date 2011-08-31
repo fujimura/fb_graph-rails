@@ -2,6 +2,11 @@ module FbGraph::Rails
   module Authentication
 
     extend ActiveSupport::Concern
+    included do |base|
+      base.class_eval do
+        helper_method :current_user
+      end
+    end
 
     module ClassMethods
 
