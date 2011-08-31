@@ -20,7 +20,8 @@ module FbGraph::Rails
       #
       def require_user_with(*args, &block)
         args = args.dup
-        filter_options, permissions = args.extract_options!, args.flatten
+        options, permissions = args.extract_options!, args.flatten
+        relocation, filter_options = options.delete(:relocation), options
 
         #TODO Handle permission includes underscore
         #     This is not actually harmful but the name of defined method
@@ -47,10 +48,11 @@ module FbGraph::Rails
         # when the user didn't have all required permissions
         define_method rescue_method_name do |exception|
           if exception.permissions == permissions
-            if block_given?
-              instance_eval(&block)
+            client = Config.auth.client
+            if relocation
+              client.redirect_uri = Config.canvas_url + (request.get? ? request.path : root_path)
+              relocate_to client.authorization_uri(:scope => permissions)
             else
-              client = Config.auth.client
               client.redirect_uri = request.get? ? request.url : root_url
               redirect_to client.authorization_uri(:scope => permissions)
             end

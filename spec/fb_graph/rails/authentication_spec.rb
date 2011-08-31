@@ -134,11 +134,9 @@ describe ApplicationController do
     it { should respond_with :success }
   end
 
-  describe 'require user_birthday and email, rescue with given block' do
+  describe 'require user_birthday and email, rescue with relocation' do
     controller do
-      require_user_with :user_birthday, :email do
-        relocate_to oauth_permission_url_for([:user_birthday, :email])
-      end
+      require_user_with :user_birthday, :email, :relocation => true
 
       def index
         render :nothing => true, :status => 200
@@ -151,7 +149,7 @@ describe ApplicationController do
       get :index
     end
 
-    it { should relocate_to controller.send(:oauth_permission_url_for, [:user_birthday, :email]) }
+    it { should relocate_to /user_birthday\+email/ }
   end
 
   describe '#current_user' do
