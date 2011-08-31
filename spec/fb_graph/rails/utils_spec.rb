@@ -3,33 +3,6 @@ require 'spec_helper'
 describe FbGraph::Rails::Utils do
   include RSpec::Rails::ControllerExampleGroup
 
-  describe '#oauth_permission_url_for' do
-    controller do
-      def index
-        render :nothing => true, :status => 200
-      end
-      def create
-        render :nothing => true, :status => 200
-      end
-    end
-    let(:permissions) { [:email, :user_birthday] }
-    it 'should return url includes given permissions' do
-      controller.oauth_permission_url_for(permissions).should =~ /&scope=#{permissions.join(',')}/
-    end
-    context 'request was GET' do
-      it 'should include redirect_uri=(requested path)' do
-        get :index
-        controller.oauth_permission_url_for(permissions).should =~ /&redirect_uri=#{controller.canvas_url_for(request.path)}/
-      end
-    end
-    context 'request was POST' do
-      it 'should include redirect_uri=root' do
-        post :create
-        controller.oauth_permission_url_for(permissions).should =~ /&redirect_uri=#{controller.canvas_url_for('/')}/
-      end
-    end
-  end
-
   describe '#canvas_url_for' do
     controller do
       def index ; render :nothing => true, :status => 200 ; end
