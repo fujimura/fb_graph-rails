@@ -49,7 +49,9 @@ module FbGraph::Rails
         define_method rescue_method_name do |exception|
           raise exception unless exception.permissions == permissions
 
-          client = Config.auth.client
+          client = FbGraph::Auth.new(Config.client_id,
+                                     Config.client_secret).client
+
           if relocation
             client.redirect_uri = Config.canvas_url + (request.get? ? request.path : root_path)
             relocate_to client.authorization_uri(:scope => permissions)

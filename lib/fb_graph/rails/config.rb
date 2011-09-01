@@ -31,14 +31,6 @@ module FbGraph::Rails
         end
       end
 
-      def auth
-        FbGraph::Auth.new client_id, client_secret
-      end
-
-      def auth_from_signed_request(signed_request)
-        auth.from_signed_request signed_request
-      end
-
       private
 
       def from_yaml(name)
