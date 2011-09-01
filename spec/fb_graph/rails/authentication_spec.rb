@@ -190,11 +190,11 @@ describe ApplicationController do
     end
   end
 
-  describe '#auth_with_signed_request' do
+  describe '#authenticate_with_signed_request' do
     it 'should do nothing unless signed_request was given in params' do
       dont_allow(FbGraph::Auth).new
       controller.params[:signed_request] = nil
-      controller.auth_with_signed_request
+      controller.authenticate_with_signed_request
       true.should be_true # hmmm
     end
 
@@ -209,7 +209,7 @@ describe ApplicationController do
           auth
         end
         controller.params[:signed_request] = 'a'
-        controller.auth_with_signed_request
+        controller.authenticate_with_signed_request
       end
       it 'should authenticate with new user' do
         controller.current_user.should == new_user
@@ -224,7 +224,7 @@ describe ApplicationController do
         end
         controller.instance_variable_set '@current_user', user
         controller.params[:signed_request] = 'a'
-        controller.auth_with_signed_request
+        controller.authenticate_with_signed_request
       end
       it 'should unauthenticate user' do
         controller.current_user.should be_nil

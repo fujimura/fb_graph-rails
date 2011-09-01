@@ -31,7 +31,7 @@ module FbGraph::Rails
 
         # Define method to check current_user has given permissions
         define_method require_method_name do
-          auth_with_signed_request || auth_with_code
+          authenticate_with_signed_request || authenticate_with_code
 
           authorized = begin
                          current_user && current_user.permits?(permissions)
@@ -92,8 +92,7 @@ module FbGraph::Rails
       # If signed_request was not given, do nothing.
       # If signed_request was not authorized(means mainly user didn't installed app), do nothing.
       #
-      # TODO rename method
-      def auth_with_signed_request
+      def authenticate_with_signed_request
         return unless params[:signed_request]
 
         auth = FbGraph::Auth.new(Config.client_id,
@@ -103,7 +102,7 @@ module FbGraph::Rails
         authenticate ::User.identify(auth.user) if auth.authorized?
       end
 
-      def auth_with_code
+      def authenticate_with_code
         #TODO test
         return unless params[:code]
 
