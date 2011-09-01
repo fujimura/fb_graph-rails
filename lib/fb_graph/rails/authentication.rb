@@ -47,17 +47,15 @@ module FbGraph::Rails
         # Define method to handle the error which will be raised
         # when the user didn't have all required permissions
         define_method rescue_method_name do |exception|
-          if exception.permissions == permissions
-            client = Config.auth.client
-            if relocation
-              client.redirect_uri = Config.canvas_url + (request.get? ? request.path : root_path)
-              relocate_to client.authorization_uri(:scope => permissions)
-            else
-              client.redirect_uri = request.get? ? request.url : root_url
-              redirect_to client.authorization_uri(:scope => permissions)
-            end
+          raise exception unless exception.permissions == permissions
+
+          client = Config.auth.client
+          if relocation
+            client.redirect_uri = Config.canvas_url + (request.get? ? request.path : root_path)
+            relocate_to client.authorization_uri(:scope => permissions)
           else
-            raise exception
+            client.redirect_uri = request.get? ? request.url : root_url
+            redirect_to client.authorization_uri(:scope => permissions)
           end
         end
         rescue_from UserDoesNotAuthenticated, :with => rescue_method_name
