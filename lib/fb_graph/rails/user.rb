@@ -4,6 +4,7 @@ module FbGraph::Rails
     extend ActiveSupport::Concern
 
     module ClassMethods
+      #TODO Merge with FbGraph::Rails::Node
       def facebook_attributes(*args)
         args = args.dup
         options, attrs = args.extract_options!, args.flatten
