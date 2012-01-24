@@ -26,7 +26,7 @@ module FbGraph::Rails
       end
     end
 
-    module InstanceMethods
+    included do
 
       def profile
         @profile ||= FbGraph::User.fetch(facebook_identifier,
