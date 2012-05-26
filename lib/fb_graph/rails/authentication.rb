@@ -49,17 +49,21 @@ module FbGraph::Rails
         #TODO test
         return unless params[:code]
 
-        auth = FbGraph::Auth.new(Config.client_id,
-                                 Config.client_secret)
-        client = auth.client
-        client.redirect_uri = url_for(request.params.merge :code => nil)
-        client.authorization_code = params[:code]
-        access_token = client.access_token!
+        access_token = get_access_token_by_code params[:code]
 
         unauthenticate
         me = FbGraph::User.me(access_token).fetch
         authenticate ::User.identify(me)
+      end
 
+      def get_access_token_by_code(code)
+        #TODO test
+        auth = FbGraph::Auth.new(Config.client_id,
+                                 Config.client_secret)
+        client = auth.client
+        client.redirect_uri = url_for(request.params.merge :code => nil)
+        client.authorization_code = code
+        client.access_token! :client_auth_body
       end
 
       # Delete current_user from database and session.
