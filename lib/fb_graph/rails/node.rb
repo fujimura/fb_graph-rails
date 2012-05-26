@@ -23,7 +23,7 @@ module FbGraph::Rails
       end
     end
 
-    module InstanceMethods
+    included do
       def profile
         return nil if @_profile_was_not_found
 

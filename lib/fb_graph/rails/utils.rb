@@ -3,7 +3,7 @@ module FbGraph::Rails
 
     extend ActiveSupport::Concern
 
-    module InstanceMethods
+    included do
 
       # similar to url_for but returns a canvas_url for given options
       #
