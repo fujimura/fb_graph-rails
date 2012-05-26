@@ -1,6 +1,5 @@
 module FbGraph::Rails
   module User
-
     extend ActiveSupport::Concern
 
     module ClassMethods

@@ -1,6 +1,5 @@
 module FbGraph::Rails
   module Utils
-
     extend ActiveSupport::Concern
 
     included do
@@ -20,7 +19,7 @@ module FbGraph::Rails
                else
                  url_for polymorphic_path(options, :only_path => true)
                end
-      "#{Config.canvas_url.sub(/\/\z/, '')}/#{path.sub(/\A\//, '')}"
+        "#{Config.canvas_url.sub(/\/\z/, '')}/#{path.sub(/\A\//, '')}"
       end
 
       # Rewrite url of inner frame and force user to access 'apps.facebook.com' type url.

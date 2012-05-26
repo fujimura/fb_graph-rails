@@ -1,7 +1,7 @@
 module FbGraph::Rails
   module Authentication
-
     extend ActiveSupport::Concern
+
     included do |base|
       base.class_eval do
         helper_method :current_user
@@ -101,13 +101,12 @@ module FbGraph::Rails
         define_method require_method_name do
           authenticate_with_signed_request || authenticate_with_code
 
-          authorized = begin
-                         current_user && current_user.permits?(permissions)
-                       rescue FbGraph::Unauthorized
-                         # This will be raised if user does not authorized app
-                         false
-                       end
-          raise UserDoesNotAuthenticated.new(permissions) unless authorized
+          begin
+            current_user && current_user.permits?(permissions)
+          rescue FbGraph::Unauthorized
+            # This will be raised if user does not authorized the app
+            false
+          end or raise(UserDoesNotAuthenticated.new(permissions))
         end
 
         before_filter require_method_name, filter_options

@@ -1,6 +1,5 @@
 module FbGraph::Rails
   module Node
-
     extend ActiveSupport::Concern
 
     module ClassMethods
