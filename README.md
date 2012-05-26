@@ -1,4 +1,5 @@
-# FbGraph-Rails
+# FbGraph-Rails [<img src="https://secure.travis-ci.org/fujimura/fb_graph-rails.png"/>](http://travis-ci.org/fujimura/fb_graph-rails)
+
 Simple FbGraph wrapper for Rails.
 
 ## Features
